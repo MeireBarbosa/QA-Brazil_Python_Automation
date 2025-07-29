@@ -9,6 +9,45 @@ class UrbanRoutesPage:
     from_field = (By.ID, 'from')
     to_field = (By.ID, 'to')
 
+
+    def enter_phone_number(self, number):
+        phone_input = self.driver.find_element(By.ID, "phone")
+        phone_input.send_keys(number)
+
+    def add_credit_card(self, number, name, expiry, cvv):
+        self.driver.find_element(By.ID, "card_number").send_keys(number)
+        self.driver.find_element(By.ID, "card_name").send_keys(name)
+        self.driver.find_element(By.ID, "card_expiry").send_keys(expiry)
+        cvv_input = self.driver.find_element(By.ID, "code")
+        cvv_input.send_keys(cvv)
+        self.driver.find_element(By.TAG_NAME, "body").click()  # simula perda de foco
+        self.driver.find_element(By.ID, "add_card_button").click()
+
+    def write_driver_comment(self, comment):
+        comment_box = self.driver.find_element(By.ID, "driver_comment")
+        comment_box.send_keys(comment)
+        self.driver.find_element(By.ID, "submit_comment").click()
+
+    def request_blanket_and_wipes(self):
+        blanket_toggle = self.driver.find_element(By.ID, "blanket_toggle")
+        blanket_toggle.click()
+        assert "active" in blanket_toggle.get_attribute("class")
+
+    def order_ice_cream(self, quantity):
+        for _ in range(quantity):
+            self.driver.find_element(By.ID, "add_ice_cream").click()
+
+    def select_tariff_comfort(self):
+        comfort_option = self.driver.find_element(By.ID, "tariff_comfort")
+        if comfort_option.is_displayed():
+            comfort_option.click()
+
+    def send_request_with_message(self, message):
+        message_box = self.driver.find_element(By.ID, "driver_message")
+        message_box.send_keys(message)
+        self.driver.find_element(By.ID, "request_button").click()
+
+
     # Selecionar tarifa e chamar táxi
     taxi_option_locator = (By.XPATH, '//button[contains(text(),"chamar")]')
     comfort_icon_locator = (By.XPATH, '//img[@src=/static/media/kids.075fd8d4.svg]')
@@ -50,3 +89,5 @@ class UrbanRoutesPage:
             return "active" in active_button.get_attribute("class")
         except Exception:
             return False
+
+

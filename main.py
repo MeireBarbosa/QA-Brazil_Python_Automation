@@ -28,15 +28,15 @@ class TestUrbanRoutes:
     def test_set_route(self):
         self.driver.get(data.URBAN_ROUTES_URL)
         routes_page = UrbanRoutesPage(self.driver)
-        routes_page.enter_from_location(data.ADDRESS_FROM)
-        routes_page.enter_to_location(data.ADDRESS_TO)
+        routes_page.enter_from_locations(data.ADDRESS_FROM)
+        routes_page.enter_to_locations(data.ADDRESS_TO)
         assert routes_page.get_from_location_value() == data.ADDRESS_FROM
         assert routes_page.get_to_location_value() == data.ADDRESS_TO
 
     def test_select_plan(self):
         self.driver.get(data.URBAN_ROUTES_URL)
         routes_page = UrbanRoutesPage(self.driver)
-        routes_page.enter_location(data.ADDRESS_FROM, data.ADDRESS_TO)
+        routes_page.enter_locations(data.ADDRESS_FROM, data.ADDRESS_TO)
         routes_page.click_taxi_option()
         routes_page.click_comfort_icon()
         assert routes_page.click_comfort_active()
@@ -48,7 +48,7 @@ class TestUrbanRoutes:
         routes_page.click_taxi_option()
         routes_page.click_comfort_icon()
         routes_page.click_number_text(data.PHONE_NUMBER)
-        assert data.PHONE_NUMBER in routes_page.numero_confirmado()
+        assert data.PHONE_NUMBER in routes_page.confirm_number()
 
     def test_fill_card(self):
         self.driver.get(data.URBAN_ROUTES_URL)
@@ -57,7 +57,7 @@ class TestUrbanRoutes:
         routes_page.click_taxi_option()
         routes_page.click_comfort_icon()
         routes_page.click_add_cartao(data.CARD_NUMBER, data.CARD_CODE)
-        assert "Cartão" in routes_page.confirm_cartao()
+        assert "Cartão" in routes_page.confirm_card()
 
     def test_comment_for_driver(self):
         self.driver.get(data.URBAN_ROUTES_URL)
@@ -92,14 +92,16 @@ class TestUrbanRoutes:
     def test_car_search_model_appears(self):
         self.driver.get(data.URBAN_ROUTES_URL)
         routes_page = UrbanRoutesPage(self.driver)
-        routes_page.enter
-        _locations(data.ADDRESS_FROM, data.ADDRESS_TO)
+        routes_page.enter_locations(data.ADDRESS_FROM, data.ADDRESS_TO)
         routes_page.click_taxi_option()
         routes_page.click_comfort_icon()
         routes_page.click_number_text(data.PHONE_NUMBER)
         routes_page.click_add_cartao(data.CARD_NUMBER, data.CARD_CODE)
         routes_page.add_comentario(data.MESSAGE_FOR_DRIVER)
         assert "Buscar carro" in routes_page.pop_up_show()
+
+        def teardown_method(self):
+            self.driver.quit()
 
 
 
